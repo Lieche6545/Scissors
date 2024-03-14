@@ -1,0 +1,35 @@
+{% include 'layout.html'%}
+{%block title%}
+<title>Login</title> 
+{%endblock%}
+
+
+
+<form method="POST" action="{{ url_for ('login')}}">
+    {%for message in msg%}
+    <div>{{message}}</div>
+    {%endfor%}
+    <div>
+        <label for="">Email</label>
+        <input 
+        type="email" 
+        name="email"
+        value="{{email}}"
+        placeholder="Enter Your Email"
+        required>
+    </div>
+    <div>
+        <label for="">Password</label>
+        <input 
+        type="password" 
+        name="password"
+        placeholder="************"
+        required>
+    </div>
+
+    <button type="submit">Login</button>
+
+    <div>
+        <a href="{{ url_for ('register')}}">Not Yet Registered? Sign-up</a>
+    </div>
+</form>

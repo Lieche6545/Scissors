@@ -1,0 +1,73 @@
+{% include 'layout.html' %}
+{% block title}
+<title>FAQ | Scissors</title>
+{% endblock %}
+
+<section id="faqs">
+    <div class="faq">
+      <h1><img class="line" src="{{ url_for('static', path='/assets/Line 70.png')}}" alt="" />FAQs</h1>
+  
+      <div class="flex-p">
+        <p>How does URL shortening work?</p>
+        <img src="{{ url_for('static', path='/assets/minus.png')}}" alt="" />
+      </div>
+  
+      <p class="small">
+        URL shortening works by taking a long URL and creating a shorter,
+        condensed version that redirects to the original URL. When a user
+        clicks on the shortened link, they are redirected to the intended
+        destination.
+      </p>
+  
+      <div class="flex-p">
+        <p>
+          Is it necessary to create an account to use the URL shortening
+          service?
+        </p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>Are the shortened links permanent? Will they expire?</p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>Are there any limitations on the number of URLs I can shorten?</p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>
+          Can I customize the shortened URLs to reflect my brand or content?
+        </p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>Can I track the performance of my shortened URLs?</p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>
+          How secure is the URL shortening service? Are the shortened links
+          protected against spam or malicious activity?
+        </p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>What is a QR code and what can it do?</p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+  
+      <div class="flex-p">
+        <p>
+          Is there an API available for integrating the URL shortening service
+          into my own applications or websites?
+        </p>
+        <img src="{{ url_for('static', path='/assets/plus.png')}}" alt="" />
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,20 @@
+<header>
+    <div class="container">
+      <div class="logo">
+        <img src="{{ url_for('static', path='/assets/logo.png')}}" alt="Logo">
+      </div>
+      <nav>
+        <ul>
+          <li><a class="linklikecolor" href="">My URLs</a></li>
+          <li><a href="">Features <img src="{{ url_for('static', path='/assets/Vector.png')}}"></a></li>
+          <li><a href="">Pricing</a></li>
+          <li><a href="">Analytics</a></li>
+          <li><a href="">FAQs</a></li>
+        </ul>
+      </nav>
+      <div class="button">
+        <span class="linklikecolor login"><a href="{{ url_for('login')}}">Log in</a></span>
+        <a href="{{ url_for('register')}}">Try for free</a>
+      </div>
+    </div>
+  </header>

@@ -1,0 +1,24 @@
+{% include 'layout.html'%}
+{%block title%}
+<title>Dashboard | Scissors</title> 
+{%endblock%}
+
+<div>
+    <div>
+        <h3>Hello,</h3>
+    </div>
+
+    <div>
+        <h2>Welcome To Your Dashboard</h2>
+        <h4>Get custom links and a complimentary domain</h4>
+    </div>
+
+    <div>
+        <button>
+            <a href=" {{ url_for ('create_url')}}">Create New</a>
+        </button>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
