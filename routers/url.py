@@ -1,5 +1,5 @@
-# import validators
-from fastapi import APIRouter, Request, Depends, HTTPException, status
+import validators
+from fastapi import APIRouter, Request, Depends, HTTPException, status, Form
 from fastapi.responses import HTMLResponse
 from schemas import url
 from sqlalchemy.orm import Session
@@ -25,29 +25,58 @@ async def index_page(
     
     return templates.TemplateResponse("index.html", {"request": request})
 
-# @routers.get("/faq", response_class= HTMLResponse)
-# async def read_all_by_user(
-#     request: Request
-# ):
-#     return templates.TemplateResponse("faq.html", ["request": request])
+@routers.get("/faq", response_class= HTMLResponse)
+async def read_all_by_user(
+    request: Request
+):
+    return templates.TemplateResponse("faq.html", {"request": request})
 
-# # Create URL Route
-# @routers.post("/create_short_url", response_model=url.URLListItem)
-# async def create_url(target_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
+# Create URL Route
+@routers.get("/create_url", response_class=HTMLResponse)
+async def create_url(request: Request):
+    return templates.TemplateResponse("create_url.html", {"request": request})
 
-#     # Authentication
-#     user = service.get_user_from_token(db, token)
+@routers.post("/create_url", response_class=HTMLResponse)
+# @rate_limited(max_calls=3, time_frame=60)
+async def create_url(
+    request: Request,
+    target_url: str = Form(...),
+    title: str = Form(...),
+    db:Session=Depends(database.get_db)
+):
+    
+    """Create a URL shortener entry."""
+    
+    msg = []
+    
+    # authentication
+    user = services.get_user_from_token(request, db)
+    
+    if not user:
+        msg.append("Session Expired, Login")
+        return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+    
+    if not validators.url(target_url):
+        msg.append("Invalid destination url, kindly include: https:// or http://")
+        return templates.TemplateResponse("create_url.html", 
+            {
+                "request": request,
+                "msg": msg, 
+                "user": user, 
+                "target_url": target_url,
+                "title": title
+            }
+        )
+    
+    db_url = crud.create_and_save_url(
+        db=db, 
+        title=title, 
+        url=target_url, 
+        user_id = user.id
+    )
+    db.refresh(db_url)
+    return RedirectResponse("/users/dashboard", status_code=status.HTTP_302_FOUND)
 
-#     if not validators.url(target_url):
-#         raise HTTPException(
-#             status_code=status.HTTP_406_NOT_ACCEPTABLE,
-#             detail="URL is not valid"
-#         )
-#     db_url = crud.create_and_save_url(db=db, url=target_url, user_id = user.id)
-#     base_url = URL(get_settings().base_url)
-#     db_url.url = str(base_url.replace(path = db_url.key))
-
-#     return db_url
 
 # # Customize URL USer Information By USer ONly
 # @routers.put("/custom/{url_key}")
@@ -137,8 +166,3 @@ async def index_page(
 #         content_disposition_type= "attachment"
 #     )
     
-
-
-
-
-

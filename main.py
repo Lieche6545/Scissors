@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import auth, url, users
+from routers import auth, url, users, webpage
 from store.models import Base
 from store.database import engine
 from fastapi.templating import Jinja2Templates
@@ -12,11 +12,12 @@ app = FastAPI(
     },
     {
         "name": "users",
-        "description": "Authentication related routes",
+        "description": "Users related routes",
     },
     {
         "name": "links",
-        "description": "Authentication related routes",
+        "description": "Links related routes",
+
     }],
     title="Li'eche Scissor App",
     description= "A FastAPI-based URL shortener and redirector.",

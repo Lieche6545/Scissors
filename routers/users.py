@@ -19,13 +19,11 @@ templates = Jinja2Templates(directory="templates")
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-@routers.get("/create_url", response_class=HTMLResponse)
-async def create_url(request: Request):
-    return templates.TemplateResponse("create_url.html", {"request": request})
-
 @routers.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
+
+
 
 # #New User Registration
 @routers.post("/sign-up", response_class=HTMLResponse)
