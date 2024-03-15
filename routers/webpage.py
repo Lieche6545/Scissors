@@ -23,17 +23,6 @@ async def faqs(request:Request):
 async def features(request:Request):
     return templates.TemplateResponse("features.html", {"request": request})
 
-# @routers.get("/faq", response_class = HTMLResponse)
-# async def faq_page(request:Request):
-#     return templates.TemplateResponse("faq.html", {"request": request})
-
-# #features page route
-# @router.get("/features", response_class = HTMLResponse)
-# async def features(
-#     request:Request,
-# ):
-    
-#     return templates.TemplateResponse("features.html", {"request": request})
 
 
 # #dashboard page route

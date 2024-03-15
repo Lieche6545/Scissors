@@ -11,8 +11,8 @@
     </div> 
 
     <div class="button">
-        <a href="">Sign Up</a> 
-        <span style="margin-left:25px;" class="linklikecolor login">Learn more</span>
+        <a href=" {{ url_for ('register')}}">Sign Up</a> 
+        <span style="margin-left:25px;" class="linklikecolor login"><a href="{{ url_for ('faqs')}}">Learn more</a></span>
       </div>
 
       <img src="{{ url_for('static', path='/assets/Group2.png')}}" style="margin: 50px;">
@@ -26,7 +26,7 @@
 
 <section id="four">
   <h1>Revolutionizing Link Optimization</h1>
-  <button type="submit" class="blue-button">Get Started</button>
+  <button type="submit" class="blue-button"><a href="{{ url_for ('register')}}">Get Started</a></button>
 </section>
 
 {% include 'footer.html'%}
