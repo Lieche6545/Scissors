@@ -23,6 +23,10 @@ async def faqs(request:Request):
 async def features(request:Request):
     return templates.TemplateResponse("features.html", {"request": request})
 
+# Homepage route
+@routers.get("/home", response_class=HTMLResponse)
+async def homepage(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 # #dashboard page route

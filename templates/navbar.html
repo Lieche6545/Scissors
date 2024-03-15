@@ -1,12 +1,12 @@
 <header>
     <div class="container">
       <div class="logo">
-        <img src="{{ url_for('static', path='/assets/Logo.png')}}" alt="Logo">
+        <a href="{{ url_for ('homepage')}}"><img src="{{ url_for('static', path='/assets/Logo.png')}}" alt="Logo"></a>
       </div>
       <nav>
         <ul>
           <li><a class="linklikecolor" href="">My URLs</a></li>
-          <li><a href="">Features <img src="{{ url_for('static', path='/assets/Vector.png')}}"></a></li>
+          <li><a href="{{ url_for ('features')}}">Features <img src="{{ url_for('static', path='/assets/Vector.png')}}"></a></li>
           <li><a href="">Pricing</a></li>
           <li><a href="">Analytics</a></li>
           <li><a href="{{ url_for ('faqs')}}">FAQs</a></li>
