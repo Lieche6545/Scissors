@@ -19,11 +19,11 @@ class  Settings():
     # db_pw: str = "admin" 
 
     # Default to SQLite
-    db_backend: str = "sqlite"
+    db_backend: str = "postgresql"
 
     
 
-    SECRET_KEY = "ezzyscissorbdbc97f82bfe593d1e45cec19ad2591af315096665512564df9af"
+    SECRET_KEY = "scissorbdbc97f82bfe593d1e45cec19ad2591af315096665512564df9af"
     ALGORITHM = "HS256"
 
     class Config:
@@ -34,10 +34,8 @@ class  Settings():
 def get_settings() -> Settings:
     settings = Settings()
     if settings.db_backend == "postgresql":
-        settings.db_url = str(
-            f"postgresql://{settings.db_user}:{settings.db_pw}"
-            f"@{settings.db_address}:{settings.db_port}/{settings.db_name}"
-        )
+        settings.db_url = "postgresql://hqbrlupr:BY-1SMDAjTIx9oNlwwT0OvzgJzoqAO6h@ziggy.db.elephantsql.com/hqbrlupr"
+        
     print(f"Loading settings for: {settings.env_name}")
     print(f"Database String: '{settings.db_url}'")
     return settings
