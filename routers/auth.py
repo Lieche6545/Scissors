@@ -22,8 +22,10 @@ templates = Jinja2Templates(directory='templates')
 async def login_for_access_token(response:Response, form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db:db_session):
 
     token = services.authenticate_user(form_data.username, form_data.password, timedelta(minutes=60), db)
-
-    return token
+    if token == False:
+        return False
+    response.set_cookie(key = "access_token", value=token, httponly=True)
+    return True
 
 @routers.get("/login", response_class=HTMLResponse)
 async def login(request:Request):
@@ -39,7 +41,7 @@ async def login(request:Request,
     try:
         form=users_schema.LoginForm(request)
         await form.create_auth_form()
-        response=RedirectResponse("/users/dashboard", status_code=status.HTTP_302_FOUND)
+        response=RedirectResponse("/webpage/dashboard", status_code=status.HTTP_302_FOUND)
         validate_user_cookie=await login_for_access_token(response= response, form_data=form, db=db)
 
         if not validate_user_cookie:

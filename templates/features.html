@@ -3,23 +3,9 @@
 {%endblock%}
 
 <section class="features">
-  <!-- <div style="width: 1440px;height: 93pxtop: 931px"> -->
-  <img
-    src="{{ url_for('static', path='/assets/#Ellipse1.png')}}"
-    style="margin-bottom: -70px; z-index: 1"
-  />
-  <img
-    src="{{ url_for('static', path='/assets/#Rectangle9.png')}}"
-    style="max-width: 1335px"
-  />
-  <!-- </div> -->
-
   <div class="container">
     <div class="features-left">
-      <h2>
-        One Stop.<br />
-        Four <span class="linklikecolor">Possibilities</span>.
-      </h2>
+      <h2>One Stop.<br> Four <span class="linklikecolor">Possibilities</span>.</h2>
     </div>
     <div class="features-right">
       <div class="feature-text">
@@ -40,77 +26,37 @@
       </div>
     </div>
   </div>
+</section>
 
-  <div class="container2">
-    <div class="left-column2">
-      <h1>
-        <img
-          style="margin-bottom: -20px"
-          src="{{ url_for('static', path='/assets/Line70.png')}}"
-        />
-        Why choose <span class="linklikecolor">Scissors</span>
-      </h1>
-      <p style="margin-left: 15px">
-        Scissors is the hub of everything that has to do with your link
-        management. We shorten your URLs, allow you creating custom ones for
-        your personal, business, event usage. Our swift QR code creation,
-        management and usage tracking with advance analytics for all of these is
-        second to none.
-      </p>
+
+
+<div class="container2">
+  <div class="left-column2">
+    <h1><img style="margin-bottom: -20px;" src="{{ url_for('static', path='/assets/Line70.png')}}"> Why choose <span class="linklikecolor">Scissors</span></h1>
+    <p style="margin-left:15px;">Scissors is the hub of everything that has to do with your link management. We shorten your URLs, allow you creating custom ones for your personal, business, event usage. Our swift QR code creation, management and usage tracking with advance analytics for all of these is second to none. </p>
+  </div>
+  <div class="right-column2">
+    <div class="feature2">
+      <div class="icon2">
+        <img src="{{ url_for('static', path='/assets/link-2-1.png')}}" alt="Icon 2">
+      </div>
+      <h2 class="heading2">URL Shortening</h2>
+      <p class="description2">Scissor allows you to shorten URLs of your business, events. Shorten your URL at scale, URL redirects.</p>
     </div>
-    <div class="right-column2">
-      <div class="feature2">
-        <div class="icon2">
-          <img
-            src="{{ url_for('static', path='/assets/link-2-1.png')}}"
-            alt="Icon 2"
-          />
-        </div>
-        <h2 class="heading2">URL Shortening</h2>
-        <p class="description2">
-          Scissor allows you to shorten URLs of your business, events. Shorten
-          your URL at scale, URL redirects.
-        </p>
-      </div>
-      <div class="feature2">
-        <div class="icon2">
-          <img
-            src="{{ url_for('static', path='/assets/edit.png')}}"
-            alt="Icon 2"
-          />
-        </div>
-        <h2 class="heading2">Custom URLs</h2>
-        <p class="description2">
-          With Scissor, you can create custom URLs, with the length you want! A
-          solution for socials and businesses.
-        </p>
-      </div>
-      <div class="feature2">
-        <div class="icon2">
-          <img
-            src="{{ url_for('static', path='/assets/grid.png')}}"
-            alt="Icon 3"
-          />
-        </div>
-        <h2 class="heading2">QR Codes</h2>
-        <p class="description2">
-          Generate QR codes to your business, events. Bring your audience and
-          customers to your doorstep with this scan and go solution.
-        </p>
-      </div>
-      <div class="feature2">
-        <div class="icon2">
-          <img
-            src="{{ url_for('static', path='/assets/activity.png')}}"
-            alt="Icon 4"
-          />
-        </div>
-        <h2 class="heading2">Data Analytics</h2>
-        <p class="description2">
-          Receive data on the usage of either your shortened URL, custom URLs or
-          generated QR codes. Embedded to monitor progress.
-        </p>
-      </div>
+    <div class="feature2">
+      <div class="icon2"><img src="{{ url_for('static', path='/assets/edit.png')}}" alt="Icon 2"></div>
+      <h2 class="heading2">Custom URLs</h2>
+      <p class="description2">With Scissor, you can create custom URLs, with the length you want! A solution for socials and businesses.</p>
+    </div>
+    <div class="feature2">
+      <div class="icon2"><img src="{{ url_for('static', path='/assets/grid.png')}}" alt="Icon 3"></div>
+      <h2 class="heading2">QR Codes</h2>
+      <p class="description2">Generate QR codes to your business, events. Bring your audience and customers to your doorstep with this scan and go solution.</p>
+    </div>
+    <div class="feature2">
+      <div class="icon2"><img src="{{ url_for('static', path='/assets/activity.png')}}" alt="Icon 4"></div>
+      <h2 class="heading2">Data Analytics</h2>
+      <p class="description2">Receive data on the usage of either your shortened URL, custom URLs or generated QR codes. Embedded to monitor progress.</p>
     </div>
   </div>
-</section>
+</div>

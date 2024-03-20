@@ -5,7 +5,7 @@
 
 <div>
     <div>
-        <h3>Hello,</h3>
+        <h3>Hello, {{user.firstname}}</h3>
     </div>
 
     <div>
@@ -18,7 +18,21 @@
             <a href=" {{ url_for ('create_url')}}">Create New</a>
         </button>
     </div>
-    <div></div>
-    <div></div>
-    <div></div>
+
+    {%for items in urls%}
+    <div>
+        <div><h3>title: {{items.title}} </h3></div>
+        <div><h2><a href="{{base_url}}{{items.key}}" target="_blank" style="color: blueviolet;">short_url: {{base_url}}{{items.key}}"</a></h2></div>
+        <div><h3>destination: {{items.destination}}</h3></div>
+        <div><h3>key: {{items.key}}</h3></div>
+        <div><h3>clicks: {{items.clicks}}</h3></div>
+        <div><h3>date_created: {{items.date_created}}</h3></div>
+    </div>
+    
+  <div>
+    <button>Customize</button>
+    <button>Download QR</button>
+    <button>Delete</button>
+  </div>
+  {%endfor%}
 </div>

@@ -28,27 +28,33 @@ async def features(request:Request):
 async def homepage(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+# Pricing page route
+@routers.get("/pricing", response_class= HTMLResponse)
+async def pricing(request:Request):
+    return templates.TemplateResponse("pricing.html", {"request": request})
 
-# #dashboard page route
-# @router.get("/dashboard", response_class=HTMLResponse)
-# async def dashboard(
-#     request: Request,
-#     db:Session=Depends(database.get_db)
-#     ):
+
+# Dashboard page route
+@routers.get("/dashboard", response_class=HTMLResponse)
+async def dashboard(
+    request: Request,
+    db:Session=Depends(database.get_db)
+    ):
+    user = services.get_user_from_token(request, db)
+    if not user:
+        return RedirectResponse("/auth/login")
+
     
-#     user = service.get_user_from_token(request, db)
-#     if not user:
-#         return RedirectResponse("/auth/login")
     
-#     """View URL."""
-#     urls = db.query(model.URL).filter(model.URL.owner_id == user.id).all()
+    """View URL."""
+    urls = db.query(models.URL).filter(models.URL.owner_id == user.id).all()
     
-#     base_url = URL(get_settings().base_url)
+    base_url = URL(get_settings().base_url)
     
-#     return templates.TemplateResponse(
-#         "dashboard.html",{
-#         "request": request,
-#         "urls": urls, 
-#         "user": user,
-#         "base_url": base_url}
-#     )
+    return templates.TemplateResponse(
+        "dashboard.html",{
+        "request": request,
+        "urls": urls, 
+        "user": user,
+        "base_url": base_url}
+    )

@@ -25,12 +25,6 @@ async def index_page(
     
     return templates.TemplateResponse("index.html", {"request": request})
 
-@routers.get("/faq", response_class= HTMLResponse)
-async def read_all_by_user(
-    request: Request
-):
-    return templates.TemplateResponse("faq.html", {"request": request})
-
 # Create URL Route
 @routers.get("/create_url", response_class=HTMLResponse)
 async def create_url(request: Request):
@@ -76,47 +70,47 @@ async def create_url(
         user_id = user.id
     )
     db.refresh(db_url)
-    return RedirectResponse("/users/dashboard", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_302_FOUND)
 
 
-# # Customize URL USer Information By USer ONly
-# @routers.put("/custom/{url_key}")
-# async def customize_url(url_key: str, custom_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
+# Customize URL USer Information By USer ONly
+@routers.put("/custom/{url_key}")
+async def customize_url(url_key: str, custom_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
 
-#     # Authentication
-#     user = service.get_user_from_token(db, token)
+    # Authentication
+    user = services.get_user_from_token(db, token)
 
-#     # Authorization
-#     scan_user = db.query(models.USER).filter(models.USER.email == user.email)
-#     if not scan_user.first():
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Unauthorized User"
-#         )
+    # Authorization
+    scan_user = db.query(models.USER).filter(models.USER.email == user.email)
+    if not scan_user.first():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Unauthorized User"
+        )
     
-#     scan_key = db.query(models.URL).filter(models.URL.key == url_key, models.URL.is_active == True)
+    scan_key = db.query(models.URL).filter(models.URL.key == url_key, models.URL.is_active == True)
 
-#     if crud.get_url_by_key(custom_url, db) == True:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Already Taken"
-#         )
+    if crud.get_url_by_key(custom_url, db) == True:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Already Taken"
+        )
     
-#     # View URL By Key
-# @routers.get("/{url_key}")
-# async def forward_to_target_url(
-#     url_key: str,
-#     db:Session=Depends(database.get_db)
-# ):
+    # View URL By Key
+@routers.get("/{url_key}")
+async def redirect_url(
+    url_key: str,
+    db:Session=Depends(database.get_db)
+):
         
-#     if db_url := crud.get_url_by_key(db=db, url_key=url_key):
-#         crud.update_db_clicks(db=db, db_url=db_url)
-#         return RedirectResponse(db_url.target_url)
-#     else:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail= f"No Match Found For {url_key} Key"
-#         )
+    if db_url := crud.get_url_by_key(db=db, url_key=url_key):
+        crud.update_db_clicks(db=db, db_url=db_url)
+        return RedirectResponse(db_url.destination)
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail= f"No Match Found For {url_key} Key"
+        )
         
 # # Generate QRCode Route
 # @routers.put("/drcode/{url_key}")

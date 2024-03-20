@@ -19,7 +19,7 @@ class  Settings():
     # db_pw: str = "admin" 
 
     # Default to SQLite
-    db_backend: str = "postgresql"
+    db_backend: str = "sqlite"
 
     
 
