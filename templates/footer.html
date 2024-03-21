@@ -6,12 +6,12 @@
 
   
       <div class="lodo-div">
-        <img src="assets/Logo (1).png" alt="" />
+        <a href="{{ url_for ('homepage')}}"><img src="{{ url_for('static', path='/assets/Logo.png')}}" alt="Logo"></a> 
         <div class="socials">
-          <img src="assets/i.fi-social-twitter.png" alt="" />
-          <img src="assets/svg.feather.png" alt="" />
-          <img src="assets/i.fi-social-linkedin.png" alt="" />
-          <img src="assets/i.fi-social-facebook.png" alt="" />
+          <a href="https://twitter.com/VLieche" target="_blank"><img src="{{ url_for('static', path='/assets/i.fi-social-twitter.png')}}" alt="Twitter" /></a>
+          <a href="https://github.com/Lieche6545/Scissors"></a>
+          <a href="https://www.instagram.com/victor_lieche/" target="_blank"><img src="{{ url_for('static', path='/assets/svg.feather.png')}}" alt="" /></a>
+          <a href="https://www.linkedin.com/in/victor-amaliechi-618282104/" target="_blank"><img src="{{ url_for('static', path='/assets/i.fi-social-linkedin.png')}}" alt="" /></a>
         </div>
       </div>
   
@@ -90,4 +90,4 @@
   
     
   </footer>
-  <p class="foot">Terms of Service | Security |  Scissor 2023</p>
+  <p class="foot">Terms of Service | Security |  Scissor 2024</p>

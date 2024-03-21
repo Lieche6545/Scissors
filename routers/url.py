@@ -13,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 
 
 
+
 routers = APIRouter(tags=["links"])
 
 templates = Jinja2Templates(directory= "templates")
@@ -73,7 +74,7 @@ async def create_url(
     return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_302_FOUND)
 
 
-# Customize URL USer Information By USer ONly
+# Customize URL User Information By User Only
 @routers.put("/custom/{url_key}")
 async def customize_url(url_key: str, custom_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
 
@@ -112,52 +113,78 @@ async def redirect_url(
             detail= f"No Match Found For {url_key} Key"
         )
         
-# # Generate QRCode Route
-# @routers.put("/drcode/{url_key}")
-# async def add_qrcode_to_url(url_key: str, db:Session=Depends(database.get_db), token: str=Depends(oauth2_scheme)):
-#         # Generate QRcode for website, for registered users only
+# Generate QRCode Route
+@routers.put("/drcode/{url_key}")
+async def add_qrcode_to_url(url_key: str, db:Session=Depends(database.get_db), token: str=Depends(oauth2_scheme)):
+        # Generate QRcode for website, for registered users only
 
-#     # Authentication
-#     user = service.get_url_from_token(db, token)
+    # Authentication
+    user = services.get_url_from_token(db, token)
 
-#     db_url = crud.get_url_by_key(url_key, db)
-#     if not db_url:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail= f"No MAtch Found For {url_key} Key"
-#         )
-#     if db_url.owner_id != user.id:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail= "Owners Permission Required"
-#         )
+    db_url = crud.get_url_by_key(url_key, db)
+    if not db_url:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail= f"No MAtch Found For {url_key} Key"
+        )
+    if db_url.owner_id != user.id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= "Owners Permission Required"
+        )
     
-#     if not db_url:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail= "URL Key Not Found"
-#         )
-#     qr = crud.make_qrcode(url_key = db_url.key)
-#     save_qr = db.query(models.URL).filter(models.URL.key == url_key)
-#     if save_qr.first():
-#         save_qr.update({"qr_url": qr})
-#         db.commit()
+    if not db_url:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail= "URL Key Not Found"
+        )
+    qr = crud.make_qrcode(url_key = db_url.key)
+    save_qr = db.query(models.URL).filter(models.URL.key == url_key)
+    if save_qr.first():
+        save_qr.update({"qr_url": qr})
+        db.commit()
 
-#     return FileResponse(qr, media_type="image/png")
+    return FileResponse(qr, media_type="image/png")
 
-# # Download QR-Code Route
-# @routers.get("/download/{url_key}")
-# async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
+# Download QR-Code Route
+@routers.get("/download/{url_key}")
+async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
 
-#     db_url = crud.get_url_by_key(url_key, db)
+    db_url = crud.get_url_by_key(url_key, db)
 
-#     if not db_url:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-#                             detail= "QR Code Key Not Found")
-#     return FileResponse(
-#         filename=db_url.key,
-#         path=db_url.qr_url,
-#         media_type="image/png",
-#         content_disposition_type= "attachment"
-#     )
+    if not db_url:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail= "QR Code Key Not Found")
+    return FileResponse(
+        filename=db_url.key,
+        path=db_url.qr_url,
+        media_type="image/png",
+        content_disposition_type= "attachment"
+    )
+
+# Delete Entry Routes
+@routers.get("/delete/{url_key}", response_class=HTMLResponse)
+async def delete_url(
+    request:Request, 
+    url_key: str, 
+    db:Session=Depends(database.get_db)
+    ):
     
+    msg = []
+    
+    user = services.get_user_from_token(request, db)
+    if user is None:
+        msg.append("session expired, kindly Login again")
+        return templates.TemplateResponse(
+            "login.html", 
+            {'request':Request, 'msg':msg}, 
+            status_code=status.HTTP_403_FORBIDDEN
+        )
+    
+    url_model = db.query(models.URL).filter(models.URL.key == url_key, models.URL.owner_id == user.id).first()
+    if url_model is None:
+        return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_302_FOUND)
+    
+    db.delete(url_model)
+    db.commit()
+    return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)

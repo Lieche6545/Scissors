@@ -84,6 +84,10 @@ async def register(
             "lastname": lastname
         })
 
+
+
+
+
 # # Editing User Information NB: Only a User can access this function
 # @routers.put("/edit_user")
 # async def edit_username(username, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
