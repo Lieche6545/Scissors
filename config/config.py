@@ -19,7 +19,7 @@ class  Settings():
     # db_pw: str = "admin" 
 
     # Default to SQLite
-    db_backend: str = "postgresql"
+    db_backend: str = "sqlite"
 
     
 
@@ -35,7 +35,7 @@ def get_settings() -> Settings:
     settings = Settings()
     if settings.db_backend == "postgresql":
         settings.db_url = "postgresql://hqbrlupr:BY-1SMDAjTIx9oNlwwT0OvzgJzoqAO6h@ziggy.db.elephantsql.com/hqbrlupr"
-        
+        settings.base_url = "https://scissors-6h2s.onrender.com/"
     print(f"Loading settings for: {settings.env_name}")
     print(f"Database String: '{settings.db_url}'")
     return settings

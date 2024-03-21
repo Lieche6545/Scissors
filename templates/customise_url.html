@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="card-body text-monospace"></div>
-    <div name = "url_key" class="card-body text-monospace">Old url key:{{url_key.key}}</div>
+    <div class="card-body text-monospace">Old url key:{{scan_key.key}}</div>
     <div class="card-body">
         <h2>Customize Url</h2>
     </div>
@@ -12,13 +12,7 @@
     <div class="card-body"></div>
 
     <div class="container">
-        {% if msg == [] %}
-        <div class="alert alert-success" role="alert">{{ "create magic" }}</div>
-        {% elif msg ==  'Updated successfully' %}
-        <div class="alert alert-success" role="alert">{{ msg }}</div>
-        {% else %}
-        <div class="alert alert-danger" role="alert">{{ msg }}</div>
-        {% endif %}
+        <div>{{ msg }}</div>
 
         <div class="card">
             <div class="card-header">
@@ -28,19 +22,19 @@
                 <form method = "POST">
         
                     <div class="form-group">
-                        <label>Title (optional)</label>
-                        <input name = "title" class="form-control" type="text" id="title" value="{{url_key.title}}">
+                        <label>Title (Optional)</label>
+                        <input name = "title" class="form-control" type="text" id="title" value="{{scan_key.title}}">
                     </div>
                     <div class="form-group">
                         <label>Target URL (optional) </label>
-                        <input name = "target_url" class="form-control" value="{{url_key.target_url}}"></input>
+                        <input name = "destination" class="form-control" value="{{scan_key.destination}}"></input>
                     </div>
                     <div class="form-group">
                         <label>Custom Key</label>
                         <input name ="custom_name" type="text" class="form-control" id="title" placeholder= "Customize URL name" required>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Customize</button>
+                    <button onclick="window.location.href='/edit_url/{{scan_key.key}}'" type="submit" class="btn btn-primary">Customize</button>
                     <button
                         onclick="window.location.href='/webpage/dashboard'"
                         type="button"

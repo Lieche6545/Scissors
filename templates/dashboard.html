@@ -30,9 +30,9 @@
     </div>
     
   <div>
-    <button>Customize</button>
-    <button>Download QR</button>
-    <button>Delete</button>
+    <button onclick="window.location.href='/edit_url/{{items.key}}'">Customize</button>
+    <button type="button"><a href="https://api.qrserver.com/v1/create-qr-code/?data={{base_url}}{{items.key}}&size=350x350" download="{{items.key}}.png" target=_blank class="#">Download QR</a></button>
+    <button onclick="window.location.href='/delete/{{items.key}}'">Delete</button>
   </div>
   {%endfor%}
 </div>

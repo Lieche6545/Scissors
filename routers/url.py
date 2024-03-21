@@ -75,27 +75,86 @@ async def create_url(
 
 
 # Customize URL User Information By User Only
-@routers.put("/custom/{url_key}")
-async def customize_url(url_key: str, custom_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
+@routers.get("/edit_url/{url_key}", response_class=HTMLResponse)
+async def edit_url(request: Request, url_key: str, db:Session=Depends(database.get_db)):
+
+    msg = []
 
     # Authentication
-    user = services.get_user_from_token(db, token)
+    user = services.get_user_from_token(request, db)
 
     # Authorization
-    scan_user = db.query(models.USER).filter(models.USER.email == user.email)
-    if not scan_user.first():
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Unauthorized User"
+    if not user:
+        msg.append("Session expired, kindly login")
+        return templates.TemplateResponse("login.html", 
+            {
+                "request": Request,
+                "msg": msg, 
+            }
+        )
+        
+    scan_key = db.query(models.URL).filter(models.URL.key == url_key).first()
+    return templates.TemplateResponse(
+        "customise_url.html", 
+            {
+                "request": request,
+                "msg": msg,
+                "user": user,
+                "scan_key": scan_key
+            }
         )
     
-    scan_key = db.query(models.URL).filter(models.URL.key == url_key, models.URL.is_active == True)
+@routers.post("/edit_url/{url_key}")
+async def edit_url(
+    request: Request, 
+    url_key: str, 
+    db:Session=Depends(database.get_db),
+    title: str=Form(...),
+    destination: str=Form(...),
+    custom_name: str=Form(...),
+    ):
 
-    if crud.get_url_by_key(custom_url, db) == True:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Already Taken"
+    msg = []
+
+    # Authentication
+    user = services.get_user_from_token(request, db)
+
+    # Authorization
+    if not user:
+        msg.append("Session expired, kindly login")
+        return templates.TemplateResponse("login.html", 
+            {
+                "request": Request,
+                "msg": msg, 
+            }
         )
+    
+    scan_key = db.query(models.URL).filter(models.URL.key == url_key).first()
+    if not scan_key:
+        return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    
+    check = crud.get_url_by_key(url_key=custom_name, db=db)
+    if check:
+        msg.append("Name has been taken")
+        return templates.TemplateResponse("customise_url.html", 
+            {
+                "request": Request,
+                "msg": msg,
+                "url_key": url_key
+            }
+        )
+    
+    scan_key.key= custom_name
+    scan_key.title= title
+    scan_key.destination= destination
+
+    db.add(scan_key)
+    db.commit()
+
+    return RedirectResponse("/webpage/dashboard", status_code=status.HTTP_302_FOUND)
+
+
+
     
     # View URL By Key
 @routers.get("/{url_key}")
@@ -113,55 +172,6 @@ async def redirect_url(
             detail= f"No Match Found For {url_key} Key"
         )
         
-# Generate QRCode Route
-@routers.put("/drcode/{url_key}")
-async def add_qrcode_to_url(url_key: str, db:Session=Depends(database.get_db), token: str=Depends(oauth2_scheme)):
-        # Generate QRcode for website, for registered users only
-
-    # Authentication
-    user = services.get_url_from_token(db, token)
-
-    db_url = crud.get_url_by_key(url_key, db)
-    if not db_url:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= f"No MAtch Found For {url_key} Key"
-        )
-    if db_url.owner_id != user.id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= "Owners Permission Required"
-        )
-    
-    if not db_url:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= "URL Key Not Found"
-        )
-    qr = crud.make_qrcode(url_key = db_url.key)
-    save_qr = db.query(models.URL).filter(models.URL.key == url_key)
-    if save_qr.first():
-        save_qr.update({"qr_url": qr})
-        db.commit()
-
-    return FileResponse(qr, media_type="image/png")
-
-# Download QR-Code Route
-@routers.get("/download/{url_key}")
-async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
-
-    db_url = crud.get_url_by_key(url_key, db)
-
-    if not db_url:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail= "QR Code Key Not Found")
-    return FileResponse(
-        filename=db_url.key,
-        path=db_url.qr_url,
-        media_type="image/png",
-        content_disposition_type= "attachment"
-    )
-
 # Delete Entry Routes
 @routers.get("/delete/{url_key}", response_class=HTMLResponse)
 async def delete_url(
