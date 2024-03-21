@@ -39,18 +39,28 @@ Receive data on the usage of either your shortened URL, custom URLs or generated
 # To get a local copy up and running, follow the steps below.
 
 # Prerequisites
-1. Python3: Get Python
+1. Python3: <https://www.python.org/downloads/> Get Python
 
 2. Installation
+
 3. Clone this repo
+
     git clone <https://github.com/Lieche6545/Scissors.git>
+
 4. Activate the virtual environment
+
     source scissors/Scripts/activate
+
 5. Install project packages
+
     pip install -r requirements.txt
+
 6. Run uvicorn
+
     uvicorn main:app --reload
+
 7. Open the link generated in the terminal on a browser
+
     http://127.0.0.1:8000
 
 
