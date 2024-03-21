@@ -19,11 +19,11 @@ class  Settings():
     # db_pw: str = "admin" 
 
     # Default to SQLite
-    db_backend: str = "sqlite"
+    db_backend: str = "postgresql"
 
     
 
-    SECRET_KEY = "scissorbdbc97f82bfe593d1e45cec19ad2591af315096665512564df9af"
+    SECRET_KEY = "scissorsbdbc97f82bfe593d1e45cec19ad2591af315096665512564df9af"
     ALGORITHM = "HS256"
 
     class Config:
